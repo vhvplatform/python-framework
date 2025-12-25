@@ -42,7 +42,7 @@ class Settings(BaseSettings):
 
     # Database settings
     database_url: PostgresDsn = Field(
-        default="postgresql+asyncpg://user:password@localhost:5432/saas_db",
+        default=PostgresDsn("postgresql+asyncpg://user:password@localhost:5432/saas_db"),
         description="PostgreSQL database URL",
     )
     database_pool_size: int = Field(
@@ -57,7 +57,7 @@ class Settings(BaseSettings):
 
     # Redis settings
     redis_url: RedisDsn = Field(
-        default="redis://localhost:6379/0", description="Redis URL"
+        default=RedisDsn("redis://localhost:6379/0"), description="Redis URL"
     )
     redis_max_connections: int = Field(
         default=10, description="Redis max connections", ge=1

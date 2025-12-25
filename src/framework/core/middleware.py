@@ -42,7 +42,7 @@ class CorrelationIdMiddleware(BaseHTTPMiddleware):
         # Bind correlation ID to logger context
         structlog.contextvars.bind_contextvars(correlation_id=correlation_id)
 
-        response = await call_next(request)
+        response: Response = await call_next(request)
         response.headers["X-Correlation-ID"] = correlation_id
 
         # Clear context
@@ -84,7 +84,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             client_host=request.client.host if request.client else None,
         )
 
-        response = await call_next(request)
+        response: Response = await call_next(request)
 
         # Calculate duration
         duration = time.time() - start_time
@@ -125,7 +125,8 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
             Response or error response
         """
         try:
-            return await call_next(request)
+            response: Response = await call_next(request)
+            return response
         except Exception as exc:
             logger.exception(
                 "unhandled_exception",
