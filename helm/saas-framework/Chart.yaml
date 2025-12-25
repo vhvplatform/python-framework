@@ -1,0 +1,17 @@
+apiVersion: v2
+name: saas-framework
+description: A Helm chart for SaaS Framework microservices
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - saas
+  - microservices
+  - fastapi
+  - kubernetes
+  - python
+home: https://github.com/longvhv/saas-framework-python
+sources:
+  - https://github.com/longvhv/saas-framework-python
+maintainers:
+  - name: SaaS Framework Team
