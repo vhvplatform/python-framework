@@ -1,0 +1,87 @@
+site_name: SaaS Framework Python
+site_description: Production-ready Python framework for AI/SaaS projects
+site_author: SaaS Framework Team
+site_url: https://github.com/longvhv/saas-framework-python
+
+repo_name: longvhv/saas-framework-python
+repo_url: https://github.com/longvhv/saas-framework-python
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+      - Configuration: getting-started/configuration.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Core Components: architecture/core-components.md
+      - Service Layer: architecture/service-layer.md
+      - Observability: architecture/observability.md
+  - User Guide:
+      - Application Factory: guide/application-factory.md
+      - Dependency Injection: guide/dependency-injection.md
+      - Service Registry: guide/service-registry.md
+      - Configuration Management: guide/configuration.md
+      - Logging: guide/logging.md
+      - Metrics: guide/metrics.md
+  - Deployment:
+      - Docker: deployment/docker.md
+      - Kubernetes: deployment/kubernetes.md
+      - Helm Charts: deployment/helm.md
+  - Examples:
+      - Basic Service: examples/basic-service.md
+  - API Reference:
+      - Core: api/core.md
+      - Services: api/services.md
+      - Observability: api/observability.md
+  - Contributing: contributing.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            docstring_style: google

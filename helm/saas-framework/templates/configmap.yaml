@@ -1,0 +1,18 @@
+{{- if .Values.configMap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "saas-framework.fullname" . }}-config
+  labels:
+    {{- include "saas-framework.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.app.name | quote }}
+  ENVIRONMENT: {{ .Values.app.environment | quote }}
+  LOG_LEVEL: {{ .Values.app.logLevel | quote }}
+  API_PREFIX: {{ .Values.app.apiPrefix | quote }}
+  METRICS_ENABLED: {{ .Values.app.metricsEnabled | quote }}
+  TRACING_ENABLED: {{ .Values.app.tracingEnabled | quote }}
+  {{- with .Values.configMap.data }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
