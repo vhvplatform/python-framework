@@ -15,7 +15,6 @@ from framework.core.exceptions import ConfigurationError
 class TestInterface:
     """Test interface class."""
 
-    pass
 
 
 class TestImplementation(TestInterface):

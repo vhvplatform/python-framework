@@ -2,10 +2,10 @@
 
 from typing import Any
 
+import structlog
+
 from framework.core.exceptions import ServiceNotFoundError
 from framework.services.base import BaseService
-
-import structlog
 
 logger = structlog.get_logger(__name__)
 

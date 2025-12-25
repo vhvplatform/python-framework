@@ -4,9 +4,9 @@ from typing import Any
 
 import pytest
 
+from framework.core.exceptions import ServiceNotFoundError
 from framework.services.base import BaseService
 from framework.services.registry import ServiceRegistry, get_registry
-from framework.core.exceptions import ServiceNotFoundError
 
 
 class MockService(BaseService):

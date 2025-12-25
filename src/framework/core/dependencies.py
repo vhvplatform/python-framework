@@ -1,6 +1,7 @@
 """Dependency injection container for the framework."""
 
-from typing import Any, Callable, TypeVar, cast
+from collections.abc import Callable
+from typing import Any, TypeVar, cast
 
 from framework.core.exceptions import ConfigurationError
 

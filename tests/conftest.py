@@ -1,7 +1,7 @@
 """Pytest configuration and shared fixtures."""
 
 import asyncio
-from typing import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Iterator
 
 import pytest
 from fastapi.testclient import TestClient
@@ -50,7 +50,7 @@ async def app(test_settings: Settings) -> AsyncIterator[Application]:
         Application instance
     """
     application = Application(test_settings)
-    yield application
+    return application
 
 
 @pytest.fixture

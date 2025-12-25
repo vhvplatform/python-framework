@@ -31,7 +31,6 @@ class BaseService(ABC):
 
         This method should initialize all resources needed by the service.
         """
-        pass
 
     @abstractmethod
     async def stop(self) -> None:
@@ -39,7 +38,6 @@ class BaseService(ABC):
 
         This method should gracefully shutdown and cleanup all resources.
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> dict[str, Any]:
@@ -48,7 +46,6 @@ class BaseService(ABC):
         Returns:
             Health status dictionary
         """
-        pass
 
     async def startup(self) -> None:
         """Startup hook called during service initialization."""

@@ -2,8 +2,8 @@
 
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
 
+import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,8 +15,6 @@ from framework.core.middleware import (
 )
 from framework.observability.logging import configure_logging
 from framework.observability.metrics import setup_metrics
-
-import structlog
 
 logger = structlog.get_logger(__name__)
 

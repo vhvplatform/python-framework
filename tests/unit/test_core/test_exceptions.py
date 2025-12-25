@@ -1,6 +1,5 @@
 """Unit tests for core exceptions."""
 
-import pytest
 
 from framework.core.exceptions import (
     AuthenticationError,
