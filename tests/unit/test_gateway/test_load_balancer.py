@@ -93,10 +93,11 @@ class TestLoadBalancer:
         balancer = LoadBalancer(instances)
         
         # Remove instance
-        balancer.remove_instance(instances[0])
+        removed_instance = instances[0]
+        balancer.remove_instance(removed_instance)
         
-        assert instances[0] not in balancer.instances
-        assert instances[0] not in balancer._connections
+        assert removed_instance not in balancer.instances
+        assert removed_instance not in balancer._connections
 
     def test_get_healthy_instances(self) -> None:
         """Test getting healthy instances."""

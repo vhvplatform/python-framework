@@ -1,3 +1,11 @@
-"""Messaging module initialization."""
+"""Messaging module for RabbitMQ and Kafka integration."""
 
-__all__: list[str] = []
+from framework.messaging.events import Event, EventBus, EventStore
+from framework.messaging.rabbitmq import RabbitMQClient
+
+__all__ = [
+    "RabbitMQClient",
+    "Event",
+    "EventBus",
+    "EventStore",
+]
