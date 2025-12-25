@@ -1,0 +1,20 @@
+# Framework dependency - install from PyPI, Git, or local path
+# Option 1: From PyPI (when published)
+# saas-framework>=0.1.0,<1.0.0
+
+# Option 2: From Git repository
+saas-framework @ git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+
+# Option 3: Local development (uncomment for local testing)
+# -e /path/to/saas-framework-python
+
+# Core dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+httpx>=0.25.0
+
+# Optional: Add service-specific dependencies here
+# sqlalchemy>=2.0.23
+# redis>=5.0.1
