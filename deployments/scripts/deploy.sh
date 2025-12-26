@@ -118,9 +118,7 @@ deploy() {
     # Build and apply with kustomize
     if command -v kustomize &> /dev/null; then
         if [ -n "${image_tag}" ]; then
-            cd "${overlay_path}"
-            kustomize edit set image saas-framework:${image_tag}
-            cd -
+            kustomize edit set image saas-framework:${image_tag} "${overlay_path}/kustomization.yaml"
         fi
         kustomize build "${overlay_path}" | ${kubectl_cmd} -f -
     else

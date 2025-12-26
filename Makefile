@@ -141,10 +141,20 @@ docker-run: ## Run Docker container locally
 .PHONY: k8s-validate
 k8s-validate: ## Validate Kubernetes manifests
 	@echo "Validating Kubernetes manifests..."
-	@for file in $$(find k8s/ -name "*.yaml" -o -name "*.yml"); do \
+	@failed=0; \
+	for file in $$(find k8s/ -name "*.yaml" -o -name "*.yml"); do \
 		echo "Validating $$file..."; \
-		kubectl apply --dry-run=client -f $$file 2>/dev/null || echo "⚠️  Failed: $$file"; \
-	done
+		if ! kubectl apply --dry-run=client -f $$file 2>&1 | grep -qE "(configured|unchanged|created)"; then \
+			echo "⚠️  Failed: $$file"; \
+			failed=$$((failed + 1)); \
+		fi; \
+	done; \
+	if [ $$failed -gt 0 ]; then \
+		echo "❌ $$failed file(s) failed validation"; \
+		exit 1; \
+	else \
+		echo "✅ All manifests are valid"; \
+	fi
 
 .PHONY: k8s-deploy-dev
 k8s-deploy-dev: ## Deploy to development environment

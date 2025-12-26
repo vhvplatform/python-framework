@@ -18,8 +18,4 @@ spec:
     port: 80
     targetPort: http
     protocol: TCP
-  - name: metrics
-    port: 8000
-    targetPort: http
-    protocol: TCP
   sessionAffinity: None
