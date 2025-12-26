@@ -3,16 +3,26 @@ kind: Kustomization
 
 namespace: saas-framework
 
-bases:
+resources:
   - ../../base
 
-commonLabels:
-  environment: production
+labels:
+  - pairs:
+      environment: production
 
 patches:
   - path: deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: saas-framework
   - path: configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: saas-framework-config
   - path: hpa-patch.yaml
+    target:
+      kind: HorizontalPodAutoscaler
+      name: saas-framework
 
 images:
   - name: saas-framework

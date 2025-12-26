@@ -5,15 +5,22 @@ namespace: saas-framework-staging
 
 namePrefix: staging-
 
-bases:
+resources:
   - ../../base
 
-commonLabels:
-  environment: staging
+labels:
+  - pairs:
+      environment: staging
 
 patches:
   - path: deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: saas-framework
   - path: configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: saas-framework-config
 
 replicas:
   - name: saas-framework
