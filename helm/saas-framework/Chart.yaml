@@ -10,8 +10,8 @@ keywords:
   - fastapi
   - kubernetes
   - python
-home: https://github.com/longvhv/saas-framework-python
+home: https://github.com/vhvplatform/python-framework
 sources:
-  - https://github.com/longvhv/saas-framework-python
+  - https://github.com/vhvplatform/python-framework
 maintainers:
   - name: SaaS Framework Team

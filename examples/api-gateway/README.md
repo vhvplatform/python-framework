@@ -291,5 +291,5 @@ Route(
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/longvhv/saas-framework-python/issues
-- Documentation: https://github.com/longvhv/saas-framework-python
+- GitHub Issues: https://github.com/vhvplatform/python-framework/issues
+- Documentation: https://github.com/vhvplatform/python-framework

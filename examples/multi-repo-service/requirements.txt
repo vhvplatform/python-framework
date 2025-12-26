@@ -3,7 +3,7 @@
 # saas-framework>=0.1.0,<1.0.0
 
 # Option 2: From Git repository
-saas-framework @ git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+saas-framework @ git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 
 # Option 3: Local development (uncomment for local testing)
 # -e /path/to/saas-framework-python

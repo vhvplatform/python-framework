@@ -23,9 +23,9 @@ This framework provides a production-ready foundation for building AI/SaaS appli
 
 ## Getting Help
 
-- [GitHub Issues](https://github.com/longvhv/saas-framework-python/issues)
-- [Documentation](https://github.com/longvhv/saas-framework-python/tree/main/docs)
-- [Examples](https://github.com/longvhv/saas-framework-python/tree/main/examples)
+- [GitHub Issues](https://github.com/vhvplatform/python-framework/issues)
+- [Documentation](https://github.com/vhvplatform/python-framework/tree/main/docs)
+- [Examples](https://github.com/vhvplatform/python-framework/tree/main/examples)
 
 ## Contributing
 

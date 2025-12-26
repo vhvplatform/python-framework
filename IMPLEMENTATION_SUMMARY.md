@@ -184,7 +184,7 @@ framework/
 
 ```bash
 # Clone the repository
-git clone https://github.com/longvhv/saas-framework-python.git
+git clone https://github.com/vhvplatform/python-framework.git
 cd saas-framework-python
 
 # Install dependencies

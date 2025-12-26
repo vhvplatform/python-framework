@@ -66,7 +66,7 @@ twine upload --repository-url https://pypi.company.com dist/*
 #### Option B: Git Dependency
 ```bash
 # In service repository's requirements.txt
-saas-framework @ git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+saas-framework @ git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 ```
 
 #### Option C: Local Development

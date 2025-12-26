@@ -8,13 +8,13 @@ This document explains different ways to use the SaaS Framework in your service 
 
 ```bash
 # Install specific version
-pip install git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+pip install git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 
 # Install latest from main branch
-pip install git+https://github.com/longvhv/saas-framework-python.git@main
+pip install git+https://github.com/vhvplatform/python-framework.git@main
 
 # In requirements.txt
-saas-framework @ git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+saas-framework @ git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 ```
 
 ### 2. From PyPI (When Published)
@@ -155,20 +155,20 @@ pip install -r requirements.txt
 ```yaml
 - name: Install framework
   run: |
-    pip install git+https://github.com/longvhv/saas-framework-python.git@${{ env.FRAMEWORK_VERSION }}
+    pip install git+https://github.com/vhvplatform/python-framework.git@${{ env.FRAMEWORK_VERSION }}
 ```
 
 ### GitLab CI
 
 ```yaml
 before_script:
-  - pip install git+https://github.com/longvhv/saas-framework-python.git@${FRAMEWORK_VERSION}
+  - pip install git+https://github.com/vhvplatform/python-framework.git@${FRAMEWORK_VERSION}
 ```
 
 ### Jenkins
 
 ```groovy
-sh 'pip install git+https://github.com/longvhv/saas-framework-python.git@${FRAMEWORK_VERSION}'
+sh 'pip install git+https://github.com/vhvplatform/python-framework.git@${FRAMEWORK_VERSION}'
 ```
 
 ## Private Package Registry
@@ -231,6 +231,6 @@ pip check
 ## Support
 
 For issues with installation or dependencies:
-- Check [GitHub Issues](https://github.com/longvhv/saas-framework-python/issues)
+- Check [GitHub Issues](https://github.com/vhvplatform/python-framework/issues)
 - Review [Documentation](../README.md)
 - See [Examples](../../examples/)

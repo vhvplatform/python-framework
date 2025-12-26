@@ -4,7 +4,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](http://mypy-lang.org/)
-[![Test Coverage: 83%](https://img.shields.io/badge/coverage-83%25-yellow.svg)](https://github.com/longvhv/saas-framework-python)
+[![Test Coverage: 83%](https://img.shields.io/badge/coverage-83%25-yellow.svg)](https://github.com/vhvplatform/python-framework)
 
 Production-ready Python framework for AI/SaaS projects with microservices architecture on Kubernetes.
 
@@ -63,7 +63,7 @@ Production-ready Python framework for AI/SaaS projects with microservices archit
 
 ```bash
 # Clone the repository
-git clone https://github.com/longvhv/saas-framework-python.git
+git clone https://github.com/vhvplatform/python-framework.git
 cd saas-framework-python
 
 # Install dependencies
@@ -101,7 +101,7 @@ Use the framework in separate service repositories:
 
 ```bash
 # In your service repository
-pip install git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+pip install git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 ```
 
 See the complete example in [`examples/multi-repo-service/`](examples/multi-repo-service/) or read the [Multi-Repo Guide](docs/multi-repo/README.md).
@@ -340,8 +340,8 @@ Built with:
 
 ## 📞 Contact
 
-- GitHub Issues: [Report bugs or request features](https://github.com/longvhv/saas-framework-python/issues)
-- Repository: [https://github.com/longvhv/saas-framework-python](https://github.com/longvhv/saas-framework-python)
+- GitHub Issues: [Report bugs or request features](https://github.com/vhvplatform/python-framework/issues)
+- Repository: [https://github.com/vhvplatform/python-framework](https://github.com/vhvplatform/python-framework)
 
 ---
 

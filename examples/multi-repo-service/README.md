@@ -31,7 +31,7 @@ Choose one of these methods:
 
 ```bash
 # Option A: From Git (recommended for development)
-pip install git+https://github.com/longvhv/saas-framework-python.git@v0.1.0
+pip install git+https://github.com/vhvplatform/python-framework.git@v0.1.0
 
 # Option B: From PyPI (when published)
 pip install saas-framework>=0.1.0

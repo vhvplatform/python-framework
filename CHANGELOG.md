@@ -52,5 +52,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic documentation
 - Example implementations
 
-[Unreleased]: https://github.com/longvhv/saas-framework-python/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/longvhv/saas-framework-python/releases/tag/v0.1.0
+[Unreleased]: https://github.com/vhvplatform/python-framework/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/vhvplatform/python-framework/releases/tag/v0.1.0

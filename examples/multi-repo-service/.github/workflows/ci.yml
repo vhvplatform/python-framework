@@ -29,7 +29,7 @@ jobs:
 
       - name: Install framework
         run: |
-          pip install git+https://github.com/longvhv/saas-framework-python.git@${{ env.FRAMEWORK_VERSION }}
+          pip install git+https://github.com/vhvplatform/python-framework.git@${{ env.FRAMEWORK_VERSION }}
 
       - name: Install dependencies
         run: |

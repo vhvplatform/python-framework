@@ -1,10 +1,10 @@
 site_name: SaaS Framework Python
 site_description: Production-ready Python framework for AI/SaaS projects
 site_author: SaaS Framework Team
-site_url: https://github.com/longvhv/saas-framework-python
+site_url: https://github.com/vhvplatform/python-framework
 
-repo_name: longvhv/saas-framework-python
-repo_url: https://github.com/longvhv/saas-framework-python
+repo_name: vhvplatform/python-framework
+repo_url: https://github.com/vhvplatform/python-framework
 edit_uri: edit/main/docs/
 
 theme:
