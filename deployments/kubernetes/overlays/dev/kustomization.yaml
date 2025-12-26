@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: saas-framework-dev
+
+namePrefix: dev-
+
+bases:
+  - ../../base
+
+commonLabels:
+  environment: development
+
+patches:
+  - path: deployment-patch.yaml
+  - path: configmap-patch.yaml
+
+replicas:
+  - name: saas-framework
+    count: 1
+
+images:
+  - name: saas-framework
+    newTag: dev
