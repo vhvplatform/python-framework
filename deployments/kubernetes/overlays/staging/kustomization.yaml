@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: saas-framework-staging
+
+namePrefix: staging-
+
+resources:
+  - ../../base
+
+labels:
+  - pairs:
+      environment: staging
+
+patches:
+  - path: deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: saas-framework
+  - path: configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: saas-framework-config
+
+replicas:
+  - name: saas-framework
+    count: 2
+
+images:
+  - name: saas-framework
+    newTag: staging

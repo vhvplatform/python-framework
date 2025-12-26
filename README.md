@@ -8,12 +8,15 @@
 
 Production-ready Python framework for AI/SaaS projects with microservices architecture on Kubernetes.
 
+**🎯 Aligned with go-infrastructure standards** - Seamlessly integrates into Go-based microservice ecosystems. [See Infrastructure Guide →](docs/infrastructure/integration-guide.md)
+
 **🎯 Supports both Monorepo and Multi-Repository architectures** - Use as a shared framework across independent service repositories. [See Multi-Repo Guide →](docs/multi-repo/README.md)
 
 ## ✨ Features
 
 ### 🏗️ Core Architecture
 - **Microservices Architecture** with FastAPI
+- **Go-Infrastructure Compatible** - Standard build, deployment, and observability patterns
 - **Multi-Repo Support** - Use framework as a dependency in separate service repositories
 - **Dependency Injection** pattern for clean code
 - **Service Registry & Discovery** for distributed systems
@@ -45,32 +48,53 @@ Production-ready Python framework for AI/SaaS projects with microservices archit
 - Request/response logging middleware
 
 ### 🐳 Deployment Ready
-- Optimized Dockerfile (coming soon)
-- Helm charts (coming soon)
-- Kubernetes manifests (coming soon)
-- Auto-scaling configuration (coming soon)
+- **Makefile** for standardized build/test/deploy workflow
+- **Optimized Dockerfile** with multi-arch support and OCI labels
+- **Kustomize-based K8s manifests** for environment management
+- **Helm charts** for package management
+- **Auto-scaling configuration** with HorizontalPodAutoscaler
+- **GitOps ready** - Compatible with ArgoCD, Flux
+- **CI/CD pipeline** with GitHub Actions
 
 ## 🚀 Quick Start
 
-### As a Framework (Monorepo)
-
-#### Prerequisites
+### Prerequisites
 
 - Python 3.11 or higher
-- pip or Poetry
+- Docker (for containerized deployment)
+- kubectl (for Kubernetes deployment)
+- make (for build automation)
 
-#### Installation
+### Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/vhvplatform/python-framework.git
-cd saas-framework-python
+cd python-framework
 
 # Install dependencies
-pip install -e .
+make install
 
 # Or with development dependencies
-pip install -e ".[dev]"
+make install-dev
+```
+
+### Using Make Commands
+
+The framework includes a comprehensive Makefile aligned with go-infrastructure standards:
+
+```bash
+# View all available commands
+make help
+
+# Development workflow
+make lint          # Run linting checks
+make test          # Run tests
+make docker-build  # Build Docker image
+
+# Deployment
+make k8s-deploy-dev   # Deploy to development
+make helm-install     # Install with Helm
 ```
 
 #### Basic Usage
@@ -184,17 +208,29 @@ pytest tests/unit/ -m unit
 
 ```bash
 # Install pre-commit hooks
-pip install pre-commit
-pre-commit install
+make install-dev
 
 # Run linting
-ruff check src/ tests/
+make lint
 
 # Run type checking
-mypy src/
+make typecheck
 
 # Format code
-ruff format src/ tests/
+make format
+```
+
+### Using Docker Compose
+
+```bash
+# Start development stack
+make compose-up
+
+# View logs
+make compose-logs
+
+# Stop stack
+make compose-down
 ```
 
 ### Code Quality Standards
@@ -203,6 +239,36 @@ ruff format src/ tests/
 - **Docstrings** - Google style docstrings for all public APIs
 - **Tests** - >90% test coverage required
 - **No warnings** - Code must pass mypy strict mode with zero warnings
+
+## 🚢 Deployment
+
+### Quick Deployment
+
+```bash
+# Deploy to Kubernetes (development)
+make k8s-deploy-dev
+
+# Deploy with Helm
+make helm-install
+
+# Deploy using deployment script
+./deployments/scripts/deploy.sh dev
+```
+
+### Environment-Specific Deployment
+
+```bash
+# Development
+kubectl apply -k deployments/kubernetes/overlays/dev
+
+# Staging
+kubectl apply -k deployments/kubernetes/overlays/staging
+
+# Production
+kubectl apply -k deployments/kubernetes/overlays/prod
+```
+
+For detailed deployment procedures, see [Deployment Runbook](docs/deployment/runbook.md).
 
 ## 📚 Documentation
 
@@ -295,12 +361,17 @@ registry.register(MyService("my-service"))
 - [x] Prometheus metrics
 - [x] Health check endpoints
 - [x] Comprehensive test suite
+- [x] **Makefile for standardized builds**
+- [x] **Kustomize-based Kubernetes deployments**
+- [x] **Multi-environment deployment support**
+- [x] **Go-infrastructure alignment**
+- [x] **CI/CD pipeline with security scanning**
+- [x] **Deployment automation scripts**
 
 ### 🚧 In Progress
 - [ ] Complete documentation
 - [ ] Example implementations
-- [ ] Kubernetes manifests
-- [ ] CI/CD pipeline
+- [ ] Advanced monitoring dashboards
 
 ### 📋 Planned
 - [ ] Database layer (SQLAlchemy 2.0)
@@ -310,7 +381,6 @@ registry.register(MyService("my-service"))
 - [ ] Message queue integration
 - [ ] ML model serving
 - [ ] API Gateway implementation
-- [ ] Helm charts
 
 ## 🤝 Contributing
 
