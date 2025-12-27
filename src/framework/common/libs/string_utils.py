@@ -172,14 +172,15 @@ def generate_random_string(length: int = 32, include_special: bool = False) -> s
         # Returns: "a7K9mP2nQ5rT8wX4"
 
     Note:
-        Optimized using secrets.token_urlsafe() when special chars not needed.
+        Optimized using secrets.token_hex() for better performance when special
+        chars not needed (avoids base64 padding issues with token_urlsafe).
     """
     if include_special:
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
         return "".join(secrets.choice(alphabet) for _ in range(length))
-    # Use built-in token_urlsafe for better performance when special chars not needed
-    # Adjust length since urlsafe encoding is more efficient
-    return secrets.token_urlsafe(length)[:length]
+    # Use built-in token_hex for better performance when special chars not needed
+    # token_hex generates exactly the requested number of bytes (length//2 bytes = length hex chars)
+    return secrets.token_hex(length // 2)[:length]
 
 
 def is_valid_email(email: str) -> bool:
