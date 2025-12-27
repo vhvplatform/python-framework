@@ -56,6 +56,15 @@ Production-ready Python framework for AI/SaaS projects with microservices archit
 - **GitOps ready** - Compatible with ArgoCD, Flux
 - **CI/CD pipeline** with GitHub Actions
 
+### 🎁 Enhanced Setup Experience ✨ NEW
+- **Automated Setup Scripts** - One-command installation for dev and prod
+- **Requirements Files** - Pip-based installation support alongside Poetry
+- **Environment Templates** - Pre-configured `.env` examples for all environments
+- **Validation Tools** - Verify your setup with automated checks
+- **Comprehensive Documentation** - Step-by-step guides for development and production
+- **Quick Reference Guide** - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) for common commands
+- **Platform Support** - Setup scripts for Unix/Linux/macOS and Windows
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -67,7 +76,7 @@ Production-ready Python framework for AI/SaaS projects with microservices archit
 
 ### Quick Installation
 
-#### Automated Setup (Recommended)
+#### Automated Setup (Recommended) 🎉
 
 ```bash
 # Clone the repository
@@ -114,6 +123,27 @@ docker-compose up -d
 docker build -t saas-framework .
 docker run -p 8000:8000 saas-framework
 ```
+
+### Verify Your Setup ✅
+
+After installation, validate everything is working:
+
+```bash
+# Run validation script
+./scripts/validate-setup.sh
+
+# Or check manually
+make validate-setup
+
+# Test framework import
+python3 -c "from framework.core import Application, Settings; print('✓ Success!')"
+```
+
+Access your API:
+- **API**: http://localhost:8000
+- **Interactive Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+- **Metrics**: http://localhost:8000/metrics
 
 ### Using Make Commands
 
