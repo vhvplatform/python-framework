@@ -1,8 +1,8 @@
 """Load balancer for distributing requests across service instances."""
 
-from typing import List
-from enum import Enum
 import random
+from enum import Enum
+
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -27,7 +27,7 @@ class LoadBalancer:
 
     def __init__(
         self,
-        instances: List[str],
+        instances: list[str],
         strategy: LoadBalancingStrategy = LoadBalancingStrategy.ROUND_ROBIN,
     ) -> None:
         """Initialize load balancer.
@@ -39,7 +39,7 @@ class LoadBalancer:
         self.instances = instances
         self.strategy = strategy
         self._current_index = 0
-        self._connections: dict[str, int] = {instance: 0 for instance in instances}
+        self._connections: dict[str, int] = dict.fromkeys(instances, 0)
         self._instances_count = len(instances)  # Cache length for performance
 
     def get_instance(self) -> str:
@@ -76,7 +76,7 @@ class LoadBalancer:
 
         Returns:
             Next instance in rotation
-        
+
         Note:
             Uses cached instance count for better performance.
         """
@@ -137,7 +137,7 @@ class LoadBalancer:
             self._instances_count = len(self.instances)  # Update cached count
             logger.info("instance_removed", instance=instance)
 
-    def get_healthy_instances(self) -> List[str]:
+    def get_healthy_instances(self) -> list[str]:
         """Get list of healthy instances.
 
         Returns:

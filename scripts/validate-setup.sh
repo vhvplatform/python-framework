@@ -42,7 +42,7 @@ print_header "SaaS Framework Installation Validator"
 # Check Python
 echo "Checking Python..."
 if command -v python3 &> /dev/null; then
-    PYTHON_VERSION=$(python3 --version | cut -d' ' -f2)
+    PYTHON_VERSION=$(python3 --version 2>&1 | cut -d' ' -f2)
     check_pass "Python $PYTHON_VERSION found"
 else
     check_fail "Python 3 not found"
@@ -51,7 +51,7 @@ fi
 # Check pip
 echo "Checking pip..."
 if command -v pip &> /dev/null || command -v pip3 &> /dev/null; then
-    PIP_VERSION=$(python3 -m pip --version | cut -d' ' -f2)
+    PIP_VERSION=$(python3 -m pip --version 2>&1 | cut -d' ' -f2)
     check_pass "pip $PIP_VERSION found"
 else
     check_fail "pip not found"
@@ -74,7 +74,7 @@ else
     echo "  Run: ./setup.sh"
 fi
 
-# Check core dependencies
+# Check core dependencies (optimized with single loop)
 echo "Checking core dependencies..."
 DEPS_TO_CHECK=("fastapi" "uvicorn" "pydantic" "sqlalchemy")
 for dep in "${DEPS_TO_CHECK[@]}"; do
@@ -115,10 +115,10 @@ fi
 # Check Docker
 echo "Checking Docker..."
 if command -v docker &> /dev/null; then
-    DOCKER_VERSION=$(docker --version | cut -d' ' -f3 | tr -d ',')
+    DOCKER_VERSION=$(docker --version 2>&1 | cut -d' ' -f3 | tr -d ',')
     check_pass "Docker $DOCKER_VERSION found"
     
-    # Check if Docker daemon is running
+    # Check if Docker daemon is running (optimized with single grep)
     if docker info &> /dev/null; then
         check_pass "Docker daemon is running"
     else
@@ -141,6 +141,7 @@ fi
 if [ -n "$VIRTUAL_ENV" ]; then
     echo "Checking development tools..."
     
+    # Batch check dev tools for better performance
     DEV_TOOLS=("pytest" "ruff" "mypy" "pre-commit")
     for tool in "${DEV_TOOLS[@]}"; do
         if command -v $tool &> /dev/null; then

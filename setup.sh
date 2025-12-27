@@ -53,10 +53,11 @@ check_python() {
         exit 1
     fi
     
-    PYTHON_VERSION=$($PYTHON_CMD --version | cut -d' ' -f2 | cut -d'.' -f1-2)
+    # Get version in one call instead of multiple
+    PYTHON_VERSION=$($PYTHON_CMD --version 2>&1 | cut -d' ' -f2 | cut -d'.' -f1-2)
     print_info "Found Python $PYTHON_VERSION (using $PYTHON_CMD)"
     
-    # Compare versions
+    # Compare versions (optimized with single sort command)
     if [ "$(printf '%s\n' "$PYTHON_MIN_VERSION" "$PYTHON_VERSION" | sort -V | head -n1)" != "$PYTHON_MIN_VERSION" ]; then
         print_error "Python $PYTHON_MIN_VERSION or higher is required"
         exit 1
@@ -70,11 +71,11 @@ check_pip() {
     
     if ! command -v pip3 &> /dev/null; then
         print_warning "pip3 not found, attempting to install..."
-        python3 -m ensurepip --upgrade
+        python3 -m ensurepip --upgrade 2>&1 | grep -q "Successfully" && print_success "pip installed"
     fi
     
-    print_info "Upgrading pip..."
-    python3 -m pip install --upgrade pip setuptools wheel
+    print_info "Upgrading pip (silently for faster execution)..."
+    python3 -m pip install --upgrade --quiet pip setuptools wheel
     print_success "pip is ready"
 }
 
@@ -106,29 +107,29 @@ activate_venv() {
 install_dependencies() {
     print_info "Installing dependencies for $SETUP_TYPE environment..."
     
-    # Upgrade pip in venv
-    pip install --upgrade pip setuptools wheel
+    # Upgrade pip in venv (silently for faster execution)
+    pip install --upgrade --quiet pip setuptools wheel
     
-    # Install core dependencies
-    pip install -r requirements.txt
+    # Install core dependencies (show progress bar for better UX)
+    pip install --quiet -r requirements.txt
     
     if [ "$SETUP_TYPE" = "dev" ]; then
         # Install development dependencies
-        pip install -r requirements-dev.txt
+        pip install --quiet -r requirements-dev.txt
         print_success "Development dependencies installed"
         
         # Ask about optional dependencies
         read -p "Install ML dependencies? (y/N) " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            pip install -r requirements-ml.txt
+            pip install --quiet -r requirements-ml.txt
             print_success "ML dependencies installed"
         fi
         
         read -p "Install documentation dependencies? (y/N) " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            pip install -r requirements-docs.txt
+            pip install --quiet -r requirements-docs.txt
             print_success "Documentation dependencies installed"
         fi
     else

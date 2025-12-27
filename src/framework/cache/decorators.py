@@ -25,7 +25,7 @@ def cache_key(*args: Any, **kwargs: Any) -> str:
 
     Returns:
         SHA256 hash of serialized arguments
-    
+
     Note:
         Optimized by sorting kwargs only once and using tuple for args.
     """
@@ -142,9 +142,7 @@ def invalidate_cache(
                 # Scan and delete matching keys
                 cursor = 0
                 while True:
-                    cursor, keys = await redis_client.client.scan(
-                        cursor, match=pattern, count=100
-                    )
+                    cursor, keys = await redis_client.client.scan(cursor, match=pattern, count=100)
                     if keys:
                         await redis_client.client.delete(*keys)
                         logger.debug(f"Invalidated {len(keys)} cache keys")
@@ -201,9 +199,7 @@ def rate_limit(
                 current_count = int(count) if count else 0
 
                 if current_count >= max_requests:
-                    logger.warning(
-                        f"Rate limit exceeded for {func.__name__} by {identifier}"
-                    )
+                    logger.warning(f"Rate limit exceeded for {func.__name__} by {identifier}")
                     raise RuntimeError(
                         f"Rate limit exceeded: {max_requests} requests per {window_seconds}s"
                     )
