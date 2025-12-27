@@ -37,7 +37,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions CI/CD workflow
 
 ### Changed
-- N/A (initial release)
+- **Dependency Upgrades** (2025-12-27)
+  - Updated all Python dependencies to latest stable versions:
+    - FastAPI: 0.104.0 → 0.127.0
+    - Uvicorn: 0.24.0 → 0.40.0
+    - Pydantic: 2.5.0 → 2.12.0
+    - SQLAlchemy: 2.0.23 → 2.0.45
+    - Alembic: 1.13.0 → 1.17.0
+    - Redis: 5.0.1 → 7.0.0 (major version upgrade)
+    - Aiohttp: 3.9.1 → 3.13.0
+    - Httpx: 0.25.2 → 0.28.0
+    - Structlog: 23.2.0 → 25.5.0 (major version upgrade)
+    - Pytest: 7.4.3 → 9.0.0 (major version upgrade)
+    - Pytest-asyncio: 0.21.1 → 1.3.0 (major version upgrade)
+    - Pytest-cov: 4.1.0 → 7.0.0 (major version upgrade)
+    - Mypy: 1.7.1 → 1.19.0
+    - Ruff: 0.1.7 → 0.14.0
+    - Pre-commit: 3.5.0 → 4.5.0 (major version upgrade)
+    - Psutil: 5.9.6 → 7.0.0 (major version upgrade)
+    - Tenacity: 8.2.3 → 9.1.0 (major version upgrade)
+    - ML dependencies (torch, transformers, mlflow, onnxruntime) to latest versions
+    - Documentation tools (mkdocs, mkdocs-material, mkdocstrings) to latest versions
+  - Updated pre-commit hooks:
+    - pre-commit-hooks: v4.5.0 → v6.0.0
+    - ruff-pre-commit: v0.1.7 → v0.14.10
+    - mirrors-mypy: v1.7.1 → v1.19.1
+  - Updated GitHub Actions:
+    - actions/cache: v3 → v4
+    - codecov/codecov-action: v3 → v5
+    - actions/upload-artifact: v3 → v4
+    - actions/download-artifact: v3 → v4
+    - github/codeql-action: v2 → v3
+    - azure/setup-kubectl: v3 → v4
+    - azure/setup-helm: v3 → v4
+  - Updated Docker base images:
+    - Python: 3.11-slim → 3.12-slim
+    - PostgreSQL: 16-alpine → 17-alpine
+  - All dependency updates verified with security scanning (no vulnerabilities found)
 
 ### Deprecated
 - N/A (initial release)
