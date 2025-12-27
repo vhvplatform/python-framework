@@ -41,14 +41,20 @@ print_info() {
 check_python() {
     print_info "Checking Python version..."
     
-    if ! command -v python3 &> /dev/null; then
+    # Check for python3 first, then python
+    PYTHON_CMD=""
+    if command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+    elif command -v python &> /dev/null; then
+        PYTHON_CMD="python"
+    else
         print_error "Python 3 is not installed"
         echo "Please install Python 3.11 or higher from https://www.python.org/"
         exit 1
     fi
     
-    PYTHON_VERSION=$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1-2)
-    print_info "Found Python $PYTHON_VERSION"
+    PYTHON_VERSION=$($PYTHON_CMD --version | cut -d' ' -f2 | cut -d'.' -f1-2)
+    print_info "Found Python $PYTHON_VERSION (using $PYTHON_CMD)"
     
     # Compare versions
     if [ "$(printf '%s\n' "$PYTHON_MIN_VERSION" "$PYTHON_VERSION" | sort -V | head -n1)" != "$PYTHON_MIN_VERSION" ]; then
@@ -87,7 +93,7 @@ create_venv() {
         fi
     fi
     
-    python3 -m venv venv
+    $PYTHON_CMD -m venv venv
     print_success "Virtual environment created"
 }
 

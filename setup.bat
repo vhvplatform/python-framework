@@ -26,26 +26,33 @@ REM Check Python
 echo Checking Python version...
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python is not installed
-    echo Please install Python 3.11 or higher from https://www.python.org/
-    exit /b 1
+    python3 --version >nul 2>&1
+    if errorlevel 1 (
+        echo [ERROR] Python is not installed
+        echo Please install Python 3.11 or higher from https://www.python.org/
+        exit /b 1
+    ) else (
+        set PYTHON_CMD=python3
+    )
+) else (
+    set PYTHON_CMD=python
 )
 
-for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
-echo Found Python %PYTHON_VERSION%
+for /f "tokens=2" %%i in ('%PYTHON_CMD% --version 2^>^&1') do set PYTHON_VERSION=%%i
+echo Found Python %PYTHON_VERSION% (using %PYTHON_CMD%)
 echo [OK] Python version check passed
 echo.
 
 REM Check pip
 echo Checking pip...
-python -m pip --version >nul 2>&1
+%PYTHON_CMD% -m pip --version >nul 2>&1
 if errorlevel 1 (
     echo [WARNING] pip not found, attempting to install...
-    python -m ensurepip --upgrade
+    %PYTHON_CMD% -m ensurepip --upgrade
 )
 
 echo Upgrading pip...
-python -m pip install --upgrade pip setuptools wheel
+%PYTHON_CMD% -m pip install --upgrade pip setuptools wheel
 echo [OK] pip is ready
 echo.
 
@@ -56,13 +63,13 @@ if exist "venv" (
     set /p RECREATE="Do you want to recreate it? (y/N): "
     if /i "!RECREATE!"=="y" (
         rmdir /s /q venv
-        python -m venv venv
+        %PYTHON_CMD% -m venv venv
         echo [OK] Virtual environment recreated
     ) else (
         echo [INFO] Using existing virtual environment
     )
 ) else (
-    python -m venv venv
+    %PYTHON_CMD% -m venv venv
     echo [OK] Virtual environment created
 )
 echo.

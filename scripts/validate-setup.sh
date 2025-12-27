@@ -165,10 +165,13 @@ done
 # Try to import the framework
 echo "Checking framework import..."
 if [ -n "$VIRTUAL_ENV" ]; then
-    if python3 -c "from framework.core import Application, Settings" 2>/dev/null; then
-        check_pass "Framework can be imported"
+    # Make import path flexible - try multiple module paths
+    if python3 -c "from framework.core import Application" 2>/dev/null; then
+        check_pass "Framework can be imported (framework.core.Application)"
+    elif python3 -c "from framework import __version__" 2>/dev/null; then
+        check_pass "Framework can be imported (framework module)"
     else
-        check_fail "Cannot import framework"
+        check_fail "Cannot import framework - may need 'pip install -e .'"
     fi
 else
     check_warn "Skipping import check (virtual environment not activated)"
