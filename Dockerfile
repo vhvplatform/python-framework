@@ -1,7 +1,11 @@
 # Multi-stage Dockerfile for production-ready Python applications
 # Aligned with go-infrastructure standards
 
+# Enable BuildKit for better performance
+# syntax=docker/dockerfile:1.4
+
 # Build arguments for metadata
+ARG PYTHON_VERSION=3.12
 ARG VERSION=dev
 ARG BUILD_DATE
 ARG GIT_COMMIT
@@ -9,7 +13,7 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 # Stage 1: Builder
-FROM python:3.11-slim as builder
+FROM python:${PYTHON_VERSION}-slim as builder
 
 # Pass build args to builder stage
 ARG VERSION
@@ -19,23 +23,27 @@ ARG GIT_COMMIT
 # Set working directory
 WORKDIR /build
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install system dependencies with cache mount for faster rebuilds
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency files
+# Copy dependency files (separate layer for better caching)
 COPY pyproject.toml ./
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+# Install Python dependencies with pip cache mount for faster rebuilds
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir .
 
 # Stage 2: Runtime
-FROM python:3.11-slim
+FROM python:${PYTHON_VERSION}-slim
 
 # Re-declare build args for runtime stage
+ARG PYTHON_VERSION=3.12
 ARG VERSION
 ARG BUILD_DATE
 ARG GIT_COMMIT
@@ -58,23 +66,30 @@ RUN useradd -m -u 1000 appuser
 # Set working directory
 WORKDIR /app
 
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install runtime dependencies with cache mount
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python packages from builder
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy entrypoint script and make it executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Copy application code
 COPY --chown=appuser:appuser src/ ./src/
 
-# Set Python path and environment variables
+# Set Python path and environment variables with performance optimizations
 ENV PYTHONPATH=/app/src:$PYTHONPATH \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
+    PYTHONHASHSEED=random \
     VERSION=${VERSION}
 
 # Add build metadata file
@@ -94,5 +109,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 # Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "framework.core.application:create_application", "--host", "0.0.0.0", "--port", "8000", "--factory"]
+# Use entrypoint script for flexible configuration
+# Environment variables: WORKERS (default: 4), HOST, PORT, LOOP, HTTP, LOG_LEVEL
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

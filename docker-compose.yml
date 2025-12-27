@@ -21,6 +21,7 @@ services:
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/saas_db
       - REDIS_URL=redis://redis:6379/0
       - LOG_LEVEL=DEBUG
+      - WORKERS=2  # Fewer workers for development
     depends_on:
       postgres:
         condition: service_healthy
@@ -40,7 +41,7 @@ services:
 
   # PostgreSQL database
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: saas-framework-postgres
     environment:
       - POSTGRES_USER=postgres

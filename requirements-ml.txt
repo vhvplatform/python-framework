@@ -5,7 +5,7 @@
 # Ensure you have sufficient disk space (~10GB free) before installing
 
 # Machine Learning
-torch>=2.1.0,<3.0.0           # ~2GB download
-transformers>=4.35.0,<5.0.0   # ~1GB with models
-mlflow>=2.9.0,<3.0.0
-onnxruntime>=1.16.0,<2.0.0    # ~100MB
+torch>=2.9.0,<3.0.0           # ~2GB download
+transformers>=4.57.0,<5.0.0   # ~1GB with models
+mlflow>=3.8.0,<4.0.0
+onnxruntime>=1.23.0,<2.0.0    # ~100MB
