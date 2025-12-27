@@ -71,20 +71,20 @@ check: lint typecheck ## Run all code quality checks
 ##@ Testing
 
 .PHONY: test
-test: ## Run unit tests
-	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/ -v
+test: ## Run unit tests (with parallel execution)
+	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/ -v -n auto
 
 .PHONY: test-unit
-test-unit: ## Run unit tests only
-	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/unit/ -v -m unit
+test-unit: ## Run unit tests only (with parallel execution)
+	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/unit/ -v -m unit -n auto
 
 .PHONY: test-integration
 test-integration: ## Run integration tests only
 	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/integration/ -v -m integration
 
 .PHONY: test-coverage
-test-coverage: ## Run tests with coverage report
-	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/ -v \
+test-coverage: ## Run tests with coverage report (with parallel execution)
+	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/ -v -n auto \
 		--cov=$(SRC_DIR)/framework \
 		--cov-report=html \
 		--cov-report=term-missing \
