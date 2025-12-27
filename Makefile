@@ -30,6 +30,11 @@ DOCS_DIR := docs
 
 ##@ Setup
 
+.PHONY: setup
+setup: ## Run automated setup script
+	@echo "Running setup script..."
+	@bash setup.sh dev
+
 .PHONY: install
 install: ## Install project dependencies
 	$(PIP) install --upgrade pip setuptools wheel
@@ -251,6 +256,10 @@ version: ## Display version information
 .PHONY: status
 status: ## Check project status
 	@bash scripts/check-status.sh
+
+.PHONY: validate-setup
+validate-setup: ## Validate installation and setup
+	@bash scripts/validate-setup.sh
 
 .PHONY: security-scan
 security-scan: ## Run security scans
