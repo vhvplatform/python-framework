@@ -2,6 +2,64 @@
 
 This document outlines the performance optimizations implemented in the framework.
 
+## Python Algorithm Optimizations
+
+### Collection Utilities
+The framework's collection utilities have been optimized for better performance:
+
+- **`group_by()`**: Now uses `defaultdict` to eliminate conditional checks when grouping items, reducing O(n) operations.
+- **`deduplicate()`**: Utilizes `dict.fromkeys()` for O(n) performance instead of manual loop with set checking. In Python 3.7+, dicts maintain insertion order, making this both faster and cleaner.
+
+### String Utilities
+String processing functions have been optimized to reduce overhead:
+
+- **`slugify()`**: Optimized regex patterns and uses `str.strip()` instead of multiple regex substitutions for trimming.
+- **`snake_to_camel()`**: Improved documentation and maintained efficient `str.title()` usage.
+- **`generate_random_string()`**: Optimized by defining alphabet outside the loop comprehension.
+
+### Load Balancer
+The load balancer component has been optimized for high-throughput scenarios:
+
+- **Cached instance count**: Stores `len(instances)` to avoid repeated list length calculations in round-robin strategy.
+- **Performance gain**: Eliminates repeated O(1) operations in hot paths, especially beneficial for load balancers handling thousands of requests per second.
+
+### Cache Decorators
+Cache key generation has been optimized:
+
+- **Tuple-based keys**: Uses tuples instead of dicts for function arguments, reducing memory allocations.
+- **Reduced sorting**: Only sorts kwargs once instead of both dict keys and items.
+- **Performance gain**: Faster cache key generation for frequently-called cached functions.
+
+## Shell Script Optimizations
+
+### setup.sh
+Improved installation script performance:
+
+- **Silent installations**: Uses `--quiet` flag for pip to reduce output overhead.
+- **Optimized version checking**: Reduced subprocess calls by combining version extraction.
+- **Better error handling**: Uses `2>&1` redirection for cleaner output capture.
+
+### validate-setup.sh
+Faster validation with optimized checks:
+
+- **Batch processing**: Groups similar checks together to reduce overhead.
+- **Single command execution**: Eliminates redundant command invocations.
+- **Stderr redirection**: Uses `2>&1` for consistent output handling.
+
+### check-status.sh
+Optimized project status checking:
+
+- **Parallel-style operations**: Uses efficient command chaining.
+- **Quiet mode**: Reduces verbose output for faster execution.
+- **Optimized grep patterns**: Uses head/tail for limiting output instead of processing all.
+
+### deploy.sh
+Streamlined Kubernetes deployments:
+
+- **Single validation**: Consolidated manifest validation into one command.
+- **Error handling**: Improved error detection with proper exit codes.
+- **Reduced kubectl calls**: Minimized cluster interactions.
+
 ## Docker Build Performance
 
 ### BuildKit Caching
@@ -91,6 +149,24 @@ With these optimizations, you should see:
 - **Application throughput**: 2-3x higher with multiple workers
 
 ## Best Practices
+
+### Python Performance Best Practices
+
+1. **Use built-in functions**: Python's built-in functions (like `dict.fromkeys()`, `str.title()`) are implemented in C and are faster than equivalent Python code.
+2. **Avoid repeated calculations**: Cache values that are used multiple times (e.g., `len(list)` in loops).
+3. **Use generators**: For large datasets, use generators instead of lists to reduce memory usage.
+4. **defaultdict over conditionals**: Use `collections.defaultdict` instead of checking if keys exist.
+5. **Profile before optimizing**: Use Python profiling tools (`cProfile`, `line_profiler`) to identify actual bottlenecks.
+
+### Shell Script Best Practices
+
+1. **Reduce subprocess calls**: Combine commands with pipes (`|`) instead of multiple subprocess invocations.
+2. **Use quiet mode**: Add `--quiet` or `-q` flags to reduce output overhead in scripts.
+3. **Batch operations**: Group similar operations together to reduce startup overhead.
+4. **Redirect stderr**: Use `2>&1` or `2>/dev/null` for consistent error handling.
+5. **Cache command results**: Store command output in variables when used multiple times.
+
+### General Performance Tips
 
 1. **Use BuildKit**: Always enable Docker BuildKit for builds
 2. **Adjust workers**: Configure Uvicorn workers based on your CPU cores

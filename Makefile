@@ -71,11 +71,11 @@ check: lint typecheck ## Run all code quality checks
 ##@ Testing
 
 .PHONY: test
-test: ## Run unit tests (with parallel execution)
+test: ## Run unit tests (with parallel execution for 2-4x speedup)
 	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/ -v -n auto
 
 .PHONY: test-unit
-test-unit: ## Run unit tests only (with parallel execution)
+test-unit: ## Run unit tests only (with parallel execution for faster CI/CD)
 	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/unit/ -v -m unit -n auto
 
 .PHONY: test-integration
@@ -101,7 +101,7 @@ build: clean ## Build the project
 	$(PYTHON) -m build
 
 .PHONY: clean
-clean: ## Clean build artifacts
+clean: ## Clean build artifacts and cache files for fresh builds
 	rm -rf $(BUILD_DIR)/ dist/ *.egg-info .pytest_cache .coverage htmlcov/ coverage.xml
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete

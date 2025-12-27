@@ -1,8 +1,8 @@
 """Load balancer for distributing requests across service instances."""
 
-from typing import List
-from enum import Enum
 import random
+from enum import Enum
+
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -27,7 +27,7 @@ class LoadBalancer:
 
     def __init__(
         self,
-        instances: List[str],
+        instances: list[str],
         strategy: LoadBalancingStrategy = LoadBalancingStrategy.ROUND_ROBIN,
     ) -> None:
         """Initialize load balancer.
@@ -39,7 +39,8 @@ class LoadBalancer:
         self.instances = instances
         self.strategy = strategy
         self._current_index = 0
-        self._connections: dict[str, int] = {instance: 0 for instance in instances}
+        self._connections: dict[str, int] = dict.fromkeys(instances, 0)
+        self._instances_count = len(instances)  # Cache length for performance
 
     def get_instance(self) -> str:
         """Get next service instance based on strategy.
@@ -75,9 +76,12 @@ class LoadBalancer:
 
         Returns:
             Next instance in rotation
+
+        Note:
+            Uses cached instance count for better performance.
         """
         instance = self.instances[self._current_index]
-        self._current_index = (self._current_index + 1) % len(self.instances)
+        self._current_index = (self._current_index + 1) % self._instances_count
         return instance
 
     def _random(self) -> str:
@@ -86,7 +90,7 @@ class LoadBalancer:
         Returns:
             Random instance
         """
-        return random.choice(self.instances)
+        return random.choice(self.instances)  # nosec B311 - Not cryptographic use
 
     def _least_connections(self) -> str:
         """Least connections strategy.
@@ -118,6 +122,7 @@ class LoadBalancer:
         if instance not in self.instances:
             self.instances.append(instance)
             self._connections[instance] = 0
+            self._instances_count = len(self.instances)  # Update cached count
             logger.info("instance_added", instance=instance)
 
     def remove_instance(self, instance: str) -> None:
@@ -129,9 +134,10 @@ class LoadBalancer:
         if instance in self.instances:
             self.instances.remove(instance)
             self._connections.pop(instance, None)
+            self._instances_count = len(self.instances)  # Update cached count
             logger.info("instance_removed", instance=instance)
 
-    def get_healthy_instances(self) -> List[str]:
+    def get_healthy_instances(self) -> list[str]:
         """Get list of healthy instances.
 
         Returns:

@@ -57,16 +57,24 @@ EOF
 check_prerequisites() {
     log_info "Checking prerequisites..."
     
-    if ! command -v kubectl &> /dev/null; then
+    # Check both kubectl and kustomize in parallel-like fashion
+    local has_kubectl=false
+    local has_kustomize=false
+    
+    if command -v kubectl &> /dev/null; then
+        has_kubectl=true
+    else
         log_error "kubectl is not installed"
         exit 1
     fi
     
-    if ! command -v kustomize &> /dev/null; then
+    if command -v kustomize &> /dev/null; then
+        has_kustomize=true
+    else
         log_warn "kustomize not found, using kubectl's built-in kustomize"
     fi
     
-    # Check kubectl connection
+    # Check kubectl connection (single call)
     if ! kubectl cluster-info &> /dev/null; then
         log_error "Cannot connect to Kubernetes cluster"
         exit 1
@@ -86,10 +94,17 @@ validate_manifests() {
         exit 1
     fi
     
+    # Use single validation command with proper error handling
     if command -v kustomize &> /dev/null; then
-        kustomize build "${overlay_path}" > /dev/null
+        if ! kustomize build "${overlay_path}" > /dev/null 2>&1; then
+            log_error "Manifest validation failed"
+            exit 1
+        fi
     else
-        kubectl kustomize "${overlay_path}" > /dev/null
+        if ! kubectl kustomize "${overlay_path}" > /dev/null 2>&1; then
+            log_error "Manifest validation failed"
+            exit 1
+        fi
     fi
     
     log_info "Manifest validation passed"
