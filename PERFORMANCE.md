@@ -15,7 +15,7 @@ String processing functions have been optimized to reduce overhead:
 
 - **`slugify()`**: Optimized regex patterns and uses `str.strip()` instead of multiple regex substitutions for trimming.
 - **`snake_to_camel()`**: Improved documentation and maintained efficient `str.title()` usage.
-- **`generate_random_string()`**: When special characters aren't needed, now uses built-in `secrets.token_urlsafe()` for better performance.
+- **`generate_random_string()`**: When special characters aren't needed, now uses built-in `secrets.token_hex()` for better performance.
 
 ### Load Balancer
 The load balancer component has been optimized for high-throughput scenarios:
