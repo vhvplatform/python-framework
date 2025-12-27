@@ -1,6 +1,6 @@
 # Documentation dependencies for SaaS Framework
 # Install with: pip install -r requirements.txt -r requirements-docs.txt
 
-mkdocs>=1.5.3,<2.0.0
-mkdocs-material>=9.5.0,<10.0.0
-mkdocstrings[python]>=0.24.0,<1.0.0
+mkdocs>=1.6.0,<2.0.0
+mkdocs-material>=9.7.0,<10.0.0
+mkdocstrings[python]>=1.0.0,<2.0.0
