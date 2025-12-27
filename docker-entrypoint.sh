@@ -1,5 +1,6 @@
 #!/bin/sh
 # Entrypoint script for flexible uvicorn configuration
+# Note: uvloop and httptools are included in uvicorn[standard]
 
 # Default values
 WORKERS=${WORKERS:-4}

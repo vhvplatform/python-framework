@@ -77,8 +77,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Copy entrypoint script
-COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+# Copy entrypoint script and make it executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Copy application code
 COPY --chown=appuser:appuser src/ ./src/
