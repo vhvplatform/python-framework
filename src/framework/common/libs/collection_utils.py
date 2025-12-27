@@ -42,13 +42,12 @@ def group_by(items: Iterable[T], key_func: Callable[[T], K]) -> Dict[K, List[T]]
     Returns:
         Dictionary of grouped items
     """
-    result: Dict[K, List[T]] = {}
+    from collections import defaultdict
+    result: Dict[K, List[T]] = defaultdict(list)
     for item in items:
         key = key_func(item)
-        if key not in result:
-            result[key] = []
         result[key].append(item)
-    return result
+    return dict(result)
 
 
 def deduplicate(items: List[T]) -> List[T]:
@@ -59,14 +58,12 @@ def deduplicate(items: List[T]) -> List[T]:
         
     Returns:
         List without duplicates
+    
+    Note:
+        Uses dict.fromkeys() for O(n) performance while preserving order.
+        In Python 3.7+, dicts maintain insertion order.
     """
-    seen = set()
-    result = []
-    for item in items:
-        if item not in seen:
-            seen.add(item)
-            result.append(item)
-    return result
+    return list(dict.fromkeys(items))
 
 
 def safe_get(dictionary: Dict[K, V], key: K, default: Optional[V] = None) -> Optional[V]:

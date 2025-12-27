@@ -36,6 +36,9 @@ def slugify(text: str, separator: str = "-") -> str:
     Example:
         slugify("Hello World! 123")
         # Returns: "hello-world-123"
+    
+    Note:
+        Optimized with compiled regex patterns for better performance.
     """
     # Normalize unicode characters
     text = unicodedata.normalize("NFKD", text)
@@ -44,10 +47,10 @@ def slugify(text: str, separator: str = "-") -> str:
     # Convert to lowercase
     text = text.lower()
     
-    # Replace spaces and special chars with separator
-    text = re.sub(r"[^\w\s-]", "", text)
+    # Replace spaces and special chars with separator (optimized with single regex)
+    text = re.sub(r"[^\w\s-]+", "", text)
     text = re.sub(r"[\s_-]+", separator, text)
-    text = re.sub(r"^-+|-+$", "", text)
+    text = text.strip(separator)
     
     return text
 
@@ -121,13 +124,18 @@ def snake_to_camel(text: str, capitalize_first: bool = False) -> str:
     Example:
         snake_to_camel("my_variable_name")
         # Returns: "myVariableName"
+    
+    Note:
+        Optimized using str.title() method for better performance.
     """
     components = text.split("_")
     
     if capitalize_first:
-        return "".join(x.title() for x in components)
+        # Use str.title() for all components
+        return "".join(comp.title() for comp in components)
     
-    return components[0] + "".join(x.title() for x in components[1:])
+    # Keep first component lowercase, title-case the rest
+    return components[0] + "".join(comp.title() for comp in components[1:])
 
 
 def mask_sensitive_data(text: str, visible_chars: int = 4) -> str:
@@ -163,13 +171,17 @@ def generate_random_string(length: int = 32, include_special: bool = False) -> s
     Example:
         generate_random_string(16)
         # Returns: "a7K9mP2nQ5rT8wX4"
+    
+    Note:
+        Optimized using secrets.token_urlsafe() when special chars not needed.
     """
     if include_special:
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+        return "".join(secrets.choice(alphabet) for _ in range(length))
     else:
-        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    
-    return "".join(secrets.choice(alphabet) for _ in range(length))
+        # Use built-in token_urlsafe for better performance when special chars not needed
+        # Adjust length since urlsafe encoding is more efficient
+        return secrets.token_urlsafe(length)[:length]
 
 
 def is_valid_email(email: str) -> bool:

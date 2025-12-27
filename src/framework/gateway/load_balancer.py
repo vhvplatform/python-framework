@@ -40,6 +40,7 @@ class LoadBalancer:
         self.strategy = strategy
         self._current_index = 0
         self._connections: dict[str, int] = {instance: 0 for instance in instances}
+        self._instances_count = len(instances)  # Cache length for performance
 
     def get_instance(self) -> str:
         """Get next service instance based on strategy.
@@ -75,9 +76,12 @@ class LoadBalancer:
 
         Returns:
             Next instance in rotation
+        
+        Note:
+            Uses cached instance count for better performance.
         """
         instance = self.instances[self._current_index]
-        self._current_index = (self._current_index + 1) % len(self.instances)
+        self._current_index = (self._current_index + 1) % self._instances_count
         return instance
 
     def _random(self) -> str:
@@ -118,6 +122,7 @@ class LoadBalancer:
         if instance not in self.instances:
             self.instances.append(instance)
             self._connections[instance] = 0
+            self._instances_count = len(self.instances)  # Update cached count
             logger.info("instance_added", instance=instance)
 
     def remove_instance(self, instance: str) -> None:
@@ -129,6 +134,7 @@ class LoadBalancer:
         if instance in self.instances:
             self.instances.remove(instance)
             self._connections.pop(instance, None)
+            self._instances_count = len(self.instances)  # Update cached count
             logger.info("instance_removed", instance=instance)
 
     def get_healthy_instances(self) -> List[str]:

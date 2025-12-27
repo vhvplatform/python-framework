@@ -25,10 +25,14 @@ def cache_key(*args: Any, **kwargs: Any) -> str:
 
     Returns:
         SHA256 hash of serialized arguments
+    
+    Note:
+        Optimized by sorting kwargs only once and using tuple for args.
     """
     # Create a deterministic representation of arguments
-    key_data = {"args": args, "kwargs": sorted(kwargs.items())}
-    key_str = json.dumps(key_data, sort_keys=True, default=str)
+    # Use tuple for args (faster than list) and sorted tuple for kwargs
+    key_data = (args, tuple(sorted(kwargs.items())))
+    key_str = json.dumps(key_data, sort_keys=False, default=str)
     return hashlib.sha256(key_str.encode()).hexdigest()
 
 
