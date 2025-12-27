@@ -90,7 +90,7 @@ class LoadBalancer:
         Returns:
             Random instance
         """
-        return random.choice(self.instances)
+        return random.choice(self.instances)  # nosec B311 - Not cryptographic use
 
     def _least_connections(self) -> str:
         """Least connections strategy.
