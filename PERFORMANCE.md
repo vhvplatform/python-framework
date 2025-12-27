@@ -29,13 +29,18 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
 
 ### Uvicorn Configuration
 The application now runs with optimized Uvicorn settings:
-- **Multiple workers**: Default 4 workers for better CPU utilization
+- **Multiple workers**: Default 4 workers for better CPU utilization (configurable via WORKERS env var)
 - **uvloop event loop**: High-performance event loop implementation
 - **httptools**: Faster HTTP parsing
+- **Flexible configuration**: All Uvicorn settings configurable via environment variables
 
 To customize worker count based on your CPU cores:
 ```bash
+# Automatic calculation: (2 * CPU cores) + 1
 docker run -e WORKERS=$((2 * $(nproc) + 1)) saas-framework
+
+# Or set a specific number
+docker run -e WORKERS=8 saas-framework
 ```
 
 ### Python Optimizations

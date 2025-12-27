@@ -79,8 +79,8 @@ test-unit: ## Run unit tests only (with parallel execution)
 	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/unit/ -v -m unit -n auto
 
 .PHONY: test-integration
-test-integration: ## Run integration tests only
-	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/integration/ -v -m integration
+test-integration: ## Run integration tests only (sequential - may share resources)
+	PYTHONPATH=$(SRC_DIR):$$PYTHONPATH $(PYTEST) $(TEST_DIR)/integration/ -v -m integration -n 1
 
 .PHONY: test-coverage
 test-coverage: ## Run tests with coverage report (with parallel execution)

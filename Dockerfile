@@ -77,6 +77,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
+# Copy entrypoint script
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
 # Copy application code
 COPY --chown=appuser:appuser src/ ./src/
 
@@ -105,13 +108,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 # Expose port
 EXPOSE 8000
 
-# Run the application with performance optimizations
-# Use multiple workers for better performance (workers = (2 * CPU cores) + 1)
-CMD ["uvicorn", "framework.core.application:create_application", \
-     "--host", "0.0.0.0", \
-     "--port", "8000", \
-     "--factory", \
-     "--workers", "4", \
-     "--loop", "uvloop", \
-     "--http", "httptools", \
-     "--log-level", "info"]
+# Use entrypoint script for flexible configuration
+# Environment variables: WORKERS (default: 4), HOST, PORT, LOOP, HTTP, LOG_LEVEL
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
