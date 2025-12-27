@@ -172,15 +172,16 @@ def generate_random_string(length: int = 32, include_special: bool = False) -> s
         # Returns: "a7K9mP2nQ5rT8wX4"
 
     Note:
-        Optimized using secrets.token_hex() for better performance when special
-        chars not needed. Handles odd lengths by generating extra byte and slicing.
+        Uses secrets module for cryptographic randomness. The optimization
+        reduces the character set lookup for better performance when special
+        chars are not needed.
     """
     if include_special:
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
-        return "".join(secrets.choice(alphabet) for _ in range(length))
-    # Use built-in token_hex for better performance when special chars not needed
-    # Generate enough bytes to cover the requested length (round up for odd lengths)
-    return secrets.token_hex((length + 1) // 2)[:length]
+    else:
+        # Optimized: smaller alphabet for better performance
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
 def is_valid_email(email: str) -> bool:
