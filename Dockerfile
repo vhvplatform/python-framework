@@ -2,6 +2,7 @@
 # Aligned with go-infrastructure standards
 
 # Build arguments for metadata
+ARG PYTHON_VERSION=3.12
 ARG VERSION=dev
 ARG BUILD_DATE
 ARG GIT_COMMIT
@@ -9,7 +10,7 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 # Stage 1: Builder
-FROM python:3.12-slim as builder
+FROM python:${PYTHON_VERSION}-slim as builder
 
 # Pass build args to builder stage
 ARG VERSION
@@ -33,9 +34,10 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir .
 
 # Stage 2: Runtime
-FROM python:3.12-slim
+FROM python:${PYTHON_VERSION}-slim
 
 # Re-declare build args for runtime stage
+ARG PYTHON_VERSION=3.12
 ARG VERSION
 ARG BUILD_DATE
 ARG GIT_COMMIT
