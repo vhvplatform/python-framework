@@ -60,23 +60,59 @@ Production-ready Python framework for AI/SaaS projects with microservices archit
 
 ### Prerequisites
 
-- Python 3.11 or higher
-- Docker (for containerized deployment)
-- kubectl (for Kubernetes deployment)
-- make (for build automation)
+- **Python 3.11+** - [Download](https://www.python.org/downloads/)
+- **Git** - For cloning the repository
+- **Docker** (optional) - For containerized deployment
+- **kubectl** (optional) - For Kubernetes deployment
 
-### Installation
+### Quick Installation
+
+#### Automated Setup (Recommended)
 
 ```bash
 # Clone the repository
 git clone https://github.com/vhvplatform/python-framework.git
 cd python-framework
 
-# Install dependencies
-make install
+# Run automated setup for development
+./setup.sh dev
 
-# Or with development dependencies
-make install-dev
+# Activate virtual environment
+source venv/bin/activate
+
+# Start development server
+make run
+```
+
+#### Manual Installation
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate.bat
+
+# Install dependencies
+pip install -r requirements.txt
+
+# For development, also install:
+pip install -r requirements-dev.txt
+
+# Copy environment configuration
+cp .env.example .env
+
+# Start the server
+make run
+```
+
+#### Using Docker
+
+```bash
+# Start with Docker Compose (includes PostgreSQL, Redis, monitoring)
+docker-compose up -d
+
+# Or build and run manually
+docker build -t saas-framework .
+docker run -p 8000:8000 saas-framework
 ```
 
 ### Using Make Commands
@@ -88,13 +124,27 @@ The framework includes a comprehensive Makefile aligned with go-infrastructure s
 make help
 
 # Development workflow
-make lint          # Run linting checks
-make test          # Run tests
-make docker-build  # Build Docker image
+make install-dev    # Install with development dependencies
+make lint           # Run linting checks
+make test           # Run tests
+make docker-build   # Build Docker image
 
 # Deployment
 make k8s-deploy-dev   # Deploy to development
 make helm-install     # Install with Helm
+```
+
+### Verify Installation
+
+Validate your setup with the validation script:
+
+```bash
+./scripts/validate-setup.sh
+```
+
+Or test manually:
+```python
+python3 -c "from framework.core import Application, Settings; print('✓ Framework installed successfully')"
 ```
 
 #### Basic Usage
@@ -137,28 +187,86 @@ See the complete example in [`examples/multi-repo-service/`](examples/multi-repo
 - ✅ Independent CI/CD pipelines
 - ✅ Version flexibility for each service
 
+## 📦 Installation Methods
+
+The framework supports multiple installation approaches:
+
+### 1. Development Installation (Editable)
+For active development with auto-reload:
+```bash
+./setup.sh dev  # Automated setup
+# Or manually:
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
+### 2. Production Installation
+For production deployments:
+```bash
+./setup.sh prod  # Automated setup
+# Or with Docker:
+docker build -t saas-framework:latest .
+```
+
+### 3. As a Dependency
+Use in separate service repositories:
+```bash
+pip install git+https://github.com/vhvplatform/python-framework.git@v0.1.0
+```
+
+### 4. Poetry (Alternative)
+If you prefer Poetry:
+```bash
+poetry install              # Core dependencies
+poetry install --with dev   # Include development tools
+```
+
+**📖 Detailed guides:**
+- [Installation Guide](docs/getting-started/installation.md) - Comprehensive installation instructions
+- [Development Setup](docs/getting-started/development-setup.md) - Local development environment
+- [Production Setup](docs/getting-started/production-setup.md) - Production deployment guide
+
 ### Configuration
 
-The framework uses environment variables for configuration:
+The framework uses environment variables for configuration. Example configurations are provided:
+
+- `.env.example` - Development environment template
+- `.env.production.example` - Production environment template
+
+```bash
+# Copy and customize for your environment
+cp .env.example .env
+
+# Edit with your settings
+nano .env
+```
+
+**Key configuration variables:**
 
 ```bash
 # Application settings
-export APP_NAME="My SaaS App"
-export ENVIRONMENT="production"
-export LOG_LEVEL="INFO"
+APP_NAME="My SaaS App"
+ENVIRONMENT="development"  # or "production"
+DEBUG=true
+LOG_LEVEL="DEBUG"
 
 # API settings
-export API_HOST="0.0.0.0"
-export API_PORT="8000"
+API_HOST="0.0.0.0"
+API_PORT="8000"
 
-# Database settings
-export DATABASE_URL="postgresql+asyncpg://user:pass@localhost:5432/db"
+# Database (PostgreSQL)
+DATABASE_URL="postgresql+asyncpg://user:pass@localhost:5432/db"
 
-# Redis settings
-export REDIS_URL="redis://localhost:6379/0"
+# Cache (Redis)
+REDIS_URL="redis://localhost:6379/0"
 
-# JWT settings
-export JWT_SECRET_KEY="your-secret-key-here"
+# Security (CHANGE IN PRODUCTION!)
+JWT_SECRET_KEY="your-secret-key-here"
+```
+
+**For production deployments**, use strong secrets:
+```bash
+# Generate secure JWT secret
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
 ## 📁 Project Structure
